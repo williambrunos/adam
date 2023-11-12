@@ -6,8 +6,17 @@ logger = setup_logger()
 
 
 class UniversityScraper:
-    def __init__(self, university_webpage_url: str):
+    def __init__(self,
+                 university_webpage_url: str,
+                 filename='data.txt'):
+        """
+        This is the builder method of the UniversityScraper class
+
+        :param university_webpage_url: the University webpage URL
+        :param filename: the name of the file to persist the scraped data
+        """
         self._university_webpage_url = university_webpage_url
+        self._file_name = filename
 
     def _fetch_webpage(self):
         """
@@ -24,11 +33,25 @@ class UniversityScraper:
             logger.error(f'ERROR OF BAD CONTENT ON {self._university_webpage_url}')
             return None
 
+    def _persist_data(self, data: list, filename: str, encoding='utf-8'):
+        """
+        This method will persist the data scraped from the university webpage
+        in a file specified by the user during the instantiaiton of the object of this
+        class
+
+        :param data: the data in list format that will be persisted
+        :param filename: the file name, including the extension, to persist the data
+        :param encoding: the string encoding of the data
+        :return: None
+        """
+        with open(filename, 'w', encoding=encoding) as file:
+            file.write(''.join(data))
+
     def scrap_university_page(self):
         """
         This method will scrap the data from the source university url
 
-        :return: webpage data in string format
+        :return: None
         """
         page_content = self._fetch_webpage()
 
@@ -38,8 +61,6 @@ class UniversityScraper:
             logger.info(f'UNIVERSITY NAME {university_name}')
 
             months = soup.find_all('h3')
-            logger.info(f'MONTHS {months}')
-
             data = []
 
             for month in months:
@@ -63,7 +84,6 @@ class UniversityScraper:
                         else:
                             logger.warning(f'INVALID ROW STRUCTURE, SKIPPING')
 
-            with open('data.txt', 'w', encoding='utf-8') as file:
-                file.write(''.join(data))
+            self._persist_data(data=data, filename=self._file_name)
         else:
             logger.error(f'ERROR FETCHING {self._university_webpage_url}')
