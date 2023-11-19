@@ -32,6 +32,9 @@ Agora, instale as dependências do projeto com o seguinte comando:
 pip install -r requirements.txt
 ````
 
+**Certifique-se de que o link no script main.py contém as informações que você deseja
+obter!**
+
 Agora, execute o script responsável por realizar o scrapping com o comando:
 
 ````commandline
