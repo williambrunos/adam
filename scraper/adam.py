@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 logger = setup_logger()
 
 
-class UniversityScraper:
+class Adam:
     def __init__(self,
                  university_webpage_url: str,
                  filename='data.txt'):
