@@ -64,8 +64,8 @@ class Adam:
             data = []
 
             for month in months:
-                month_name = month.text.strip()
-                data.append(f'\n{month_name}\n')
+                month_name = month.text.replace(" de ", " ").strip()
+                # data.append(f'Mes: {month_name}\n')
                 logger.info(f'MONTH NAME {month_name}')
 
                 table = month.find_next('table', {'class': 'category'})
@@ -79,7 +79,7 @@ class Adam:
                         if day and day_description:
                             day_text = day.text.strip()
                             day_description_text = day_description.text.strip()
-                            data.append(f'{day_text}: {day_description_text}\n')
+                            data.append(f'Mês {month_name} - Dia {day_text}: {day_description_text}\n')
                             logger.info(f'{day_text}: {day_description_text}')
                         else:
                             logger.warning(f'INVALID ROW STRUCTURE, SKIPPING')
